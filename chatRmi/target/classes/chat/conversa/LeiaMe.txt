@@ -1,0 +1,10 @@
+Esse arquivo tem uma explicação de como funciona a aplicação.
+primeiro é iniciado a tela de login, ela pede um nome e um id, de 1 a 5(isso vai ser trocado mais para a frente
+para ser implementado automaticamente.
+após escolhido essas informações são enviadas ao cliente, que as armazena, e então abre se a tela de conversa.
+na tela de conversa tem a area onde as mensagens chegam, que é um txtArea dentro de um scrollPane,
+e a area de envio de mensagens, que possui um textField e um botão de envio.
+o texto é digitado no txtField, e quando clicado no botão, ele envia os dados para o cliente,
+chamando a classe de enviar mensagens do cliente, esse método então encaminha a servidor,
+e o servidor chama um metodo interno, esse método interno encaminha a mensagem ao outro cliente,
+que então manda a interface gráfica imprimir na tela.
