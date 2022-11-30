@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
  * @author Vitor
  */
 public class Login extends javax.swing.JFrame {
+    //Instanciando cliente
     Cliente cl=new Cliente();
 
     /**
@@ -33,8 +34,6 @@ public class Login extends javax.swing.JFrame {
         lblQualSeuNome = new javax.swing.JLabel();
         txtNomeUsuario = new javax.swing.JTextField();
         btnEnviar = new javax.swing.JButton();
-        lblId = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,32 +50,23 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        lblId.setText("id de 1 a 5");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblQualSeuNome)
+                .addGap(115, 115, 115))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblId))))
+                        .addGap(139, 139, 139)
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(63, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblQualSeuNome)
-                .addGap(115, 115, 115))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,13 +75,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(lblQualSeuNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblId)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
                 .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         txtNomeUsuario.getAccessibleContext().setAccessibleName("");
@@ -112,19 +98,21 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        //envia para o cliente as informações de nome e id
+        //Checa se já existe(Ainda não está pronto
         try{
         String nome=txtNomeUsuario.getText();
-        int identificador=Integer.parseInt(txtId.getText());
-        if(identificador !=cl.getId()){
-           cl.mensagemEnviada(nome,identificador);
-        //remover a tela de login da visualização e chamar a tela do chat
+        if(cl.checagem(nome)){
+            
+        //instancio a classe conversa, passando os dados do cliente que está entrando
+        Conversa cv;
+            cv = new Conversa(nome,cl.getId());
+            
+        //remove a tela de login da visualização e chamar a tela do chat
         this.dispose();
-        Conversa cv=new Conversa();
         cv.setVisible(true); 
         }
         }catch(Exception e){
-        JOptionPane.showMessageDialog(rootPane, "usuário já existe");
+        JOptionPane.showMessageDialog(rootPane, "Erro ao logar");
         }
     }//GEN-LAST:event_btnEnviarActionPerformed
 
@@ -166,9 +154,7 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblQualSeuNome;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNomeUsuario;
     // End of variables declaration//GEN-END:variables
 }

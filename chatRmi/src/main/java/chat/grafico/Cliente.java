@@ -4,12 +4,8 @@
  */
 package chat.grafico;
 
-import chat.conversa.TrocaMensagens;
-import chat.grafico.Conversa;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
+import chat.conversa.Servidor;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,31 +13,38 @@ import javax.swing.JOptionPane;
  * @author Vitor
  */
 public class Cliente {
-    private String nome;
-    private int id;
+    private String nome ="Sem Nome";
+    private int id=0;
     private String mensagem;
-    Cliente[] cli=new Cliente[5];
+    Servidor server=new Servidor();
+//    Conversa cv=new Conversa();
+    //Cliente[] clientes=new Cliente[5];
    
-        public Boolean SalvarNomeId(String nome, int id){
-            if(this.id != id){
-                this.id=id;
-                this.nome=nome;
-                JOptionPane.showInputDialog("Foi guardado com sucesso");
+    //Ainda preciso adicionar a checagem, no momento só dá true e vida que segue
+        public Boolean checagem(String nome){
+            if(this.id <5){
+                this.id++;
+                //JOptionPane.showMessageDialog(null,"Foi guardado com sucesson "+getNome()+getId());
                 return true;
             }else
                 return false;
 
     }
-    public String mensagemEnviada(String mensagem,int id){
+    public void mensagemEnviada(String mensagem){
         //Esse método encaminha a mensagem escrita para o servidor, mas para
-        //meus testes,ele irá encaminhar diretamente para a interface gráfica
-        this.setMensagem(mensagem);
-        
-        return mensagem;
+        //meus testes,ele salvar em uma String interna
+        String texto=server.trocaMsg(mensagem, getNome());
+        this.mensagem=texto;
+
     }
-    public String mensagemRecebida(String msg){
-        return "vácuo!!!";
-    }
+    //Metodo que ira receber a mensagem quando o servidor encaminhar para  outro cliente
+   // public String mensagemRecebida(String msg){
+   //     return msg;
+   // }
+    //metodo que exibe a mensagem, essa parte ainda não está pronta
+    //public String exibirMensagem(){
+    //   return mensagem;  
+    //}
 
     public String getNome() {
         return nome;
@@ -59,40 +62,14 @@ public class Cliente {
         this.id = id;
     }
 
-    public Cliente[] getCli() {
-        return cli;
+    public String getMensagem() {
+        return mensagem;
     }
 
-    public void setCli(Cliente[] cli) {
-        this.cli = cli;
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 
-	public static void main(String[] args) {
-		
-		String host = (args.length < 1) ? null : args[0];
-
-		try {
-			
-			//Obtém o stub para registro
-			Registry registry = LocateRegistry.getRegistry(host);
-			
-			//Obtém o stub para o objeto remoto (Ola) do registro.
-			TrocaMensagens stub = (TrocaMensagens) registry.lookup("TrocaMensagens");
-
-				
-			//Exemplo de invocação do método remoto
-			stub.TrocaMsg("aaaaaaaaaaaa");
-			
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println("Erro do cliente: " + e.toString());
-		}
-	}
-	public String getMensagem() {
-		return mensagem;
-	}
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}  
+    
+    
 }

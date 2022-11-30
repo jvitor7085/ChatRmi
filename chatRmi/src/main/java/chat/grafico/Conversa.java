@@ -4,18 +4,29 @@
  */
 package chat.grafico;
 
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Vitor
  */
 public class Conversa extends javax.swing.JFrame {
 
-    Cliente cli=new Cliente();
+    Cliente cliente=new Cliente();
     /**
      * Creates new form Conversa
      */
     public Conversa() {
         initComponents();
+    }
+    public Conversa(String nome, int id){
+        initComponents();
+        cliente.setId(id);
+        cliente.setNome(nome);
+       lblNomeUser.setText(cliente.getNome()); 
+       txtAreaConversa.append("\n----- "+cliente.getNome()+" Entrou no Chat!----- \n\n");
+       txtAreaConversa.setEditable(false);
     }
 
     /**
@@ -58,6 +69,7 @@ public class Conversa extends javax.swing.JFrame {
         );
 
         txtAreaConversa.setColumns(20);
+        txtAreaConversa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtAreaConversa.setRows(5);
         txtAreaConversa.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -76,6 +88,11 @@ public class Conversa extends javax.swing.JFrame {
                 txtMsgActionPerformed(evt);
             }
         });
+        txtMsg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMsgKeyReleased(evt);
+            }
+        });
 
         btnEnviar.setText("Enviar");
         btnEnviar.addActionListener(new java.awt.event.ActionListener() {
@@ -90,10 +107,10 @@ public class Conversa extends javax.swing.JFrame {
             panelAreaEnvioMsgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAreaEnvioMsgLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtMsg)
+                .addGap(18, 18, 18)
                 .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelAreaEnvioMsgLayout.setVerticalGroup(
             panelAreaEnvioMsgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +127,7 @@ public class Conversa extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelPerfil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(spaneAreaMsg)
+            .addComponent(spaneAreaMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
             .addComponent(panelAreaEnvioMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -118,10 +135,10 @@ public class Conversa extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spaneAreaMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spaneAreaMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelAreaEnvioMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -129,9 +146,14 @@ public class Conversa extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         String mensagem=txtMsg.getText();
-        cli.mensagemEnviada(mensagem, 1);
-        txtAreaConversa.append(mensagem+"\n");
-        txtAreaConversa.append(cli.mensagemRecebida()+"\n");
+        txtMsg.setText("");
+        //pega o texto digitado e manda para o cliente, enviar ao servidor
+        cliente.mensagemEnviada(mensagem);
+        //exibe a mensagem que digitamos juntamente com o nosso nome
+        //txtAreaConversa.append(cliente.getNome()+": " + mensagem+"\n");
+        //essa parte está executando direto pois o servidor ainda não está envolvido
+        txtAreaConversa.append(cliente.getMensagem()+"\n");
+    
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void txtMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMsgActionPerformed
@@ -147,6 +169,13 @@ public class Conversa extends javax.swing.JFrame {
         //txtArea
         
     }//GEN-LAST:event_txtAreaConversaComponentAdded
+
+    private void txtMsgKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMsgKeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) { //Se quiser a tecla Enter
+    JOptionPane.showMessageDialog(null,"Era para enviar");
+}
+    }//GEN-LAST:event_txtMsgKeyReleased
 
     /**
      * @param args the command line arguments
